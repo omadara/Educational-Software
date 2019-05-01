@@ -50,8 +50,27 @@ namespace Educational_Software
             webBrowser1.Hide();
             quizButton.Hide();
             string filePath = getSelectedFilePath() + ".xml";
-            quiz = new QuizControl(filePath);
+            quiz = new QuizControl(filePath, nextLesson_Click, quiz_Successful);
             splitContainer1.Panel2.Controls.Add(quiz);
+        }
+
+        private void quiz_Successful(object sender, EventArgs e)
+        {
+            Database.markLessonAsCompleted(treeView1.SelectedNode.Text);
+            updateTreeViewColors();
+        }
+
+        private void nextLesson_Click(object sender, EventArgs e)
+        {
+            TreeNode selected = treeView1.SelectedNode;
+            if (selected.Nodes.Count != 0)
+                selected = treeView1.SelectedNode.Nodes[0]; //first child
+            else if (selected.NextNode != null)
+                selected = selected.NextNode; //next sibling
+            else
+                selected = selected.Parent?.NextNode; //next aunt
+            if(selected != null)
+                treeView1.SelectedNode = selected;            
         }
 
         private void updateCompletedLabel()

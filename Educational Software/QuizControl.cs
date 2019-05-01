@@ -13,17 +13,29 @@ namespace Educational_Software
 {
     public partial class QuizControl : UserControl
     {
+        private const float SUCCESS_PERCENTAGE = 0.60f;
+        private EventHandler nextLesson_Click;
+        private EventHandler quiz_Successful;
         private XmlNodeList questions;
-        private int current = -1;
-        private int score = 0;
+        private int current;
+        private int score;
 
-        public QuizControl(string xmlPath)
+        public QuizControl(string xmlPath, EventHandler nextLesson_Click, EventHandler quiz_Successful)
         {
-            InitializeComponent();
-            this.Dock = DockStyle.Fill;
             XmlDocument doc = new XmlDocument();
             doc.Load(xmlPath);
             this.questions = doc.DocumentElement.ChildNodes;
+            this.nextLesson_Click = nextLesson_Click;
+            this.quiz_Successful = quiz_Successful;
+            reset();
+        }
+
+        private void reset()
+        {
+            InitializeComponent();
+            this.Dock = DockStyle.Fill;
+            score = 0;
+            current = -1;
             displayNextQuestion();
         }
 
@@ -35,7 +47,7 @@ namespace Educational_Software
                 return;
             }
             XmlNode question = questions[current];
-            labelProgress.Text = $"Question {current}/{questions.Count}";
+            labelProgress.Text = $"Question {current+1}/{questions.Count}";
             labelTitle.Text = question.Attributes["title"].InnerXml;
             answersPanel.Controls.Clear();
             if (question.Attributes["type"].InnerXml == "text") {
@@ -98,7 +110,34 @@ namespace Educational_Software
 
         private void displayResults()
         {
-            //TODO
+            flowLayoutPanel1.Hide();
+            resultsPanel.Show();
+            float scoreRatio = (float)score / questions.Count;
+            label1.Text = $"You got {score} out of {questions.Count} questions correct" + (scoreRatio == 1 ? "!!" : ".");
+            if (scoreRatio >= SUCCESS_PERCENTAGE) {
+                quiz_Successful(null, null);
+                if(scoreRatio != 1) {
+                    button1.Click += tryAgain_Click;
+                    button2.Show();
+                    button2.Click += nextLesson_Click;
+                } else {
+                    button1.BackColor = button2.BackColor;
+                    button1.Text = button2.Text;
+                    button1.Click += nextLesson_Click;
+                }
+            } else {
+                labelSuccess.ForeColor = Color.Firebrick;
+                labelSuccess.Text = "Ops...";
+                label1.Text += $"\nAnswer at least {Math.Ceiling(SUCCESS_PERCENTAGE*questions.Count)} questions correctly to pass.";
+                button1.Click += tryAgain_Click;
+            }
+        }
+
+        private void tryAgain_Click(object sender, EventArgs e)
+        {
+            resultsPanel.Dispose();
+            flowLayoutPanel1.Dispose();
+            reset();
         }
     }
 }

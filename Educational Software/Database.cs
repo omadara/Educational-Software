@@ -49,6 +49,11 @@ namespace Educational_Software
             //STUB
         }
 
+        internal static void markLessonAsCompleted(string title)
+        {
+            //STUB
+        }
+
         //TODO Add_lesson,Update_lesson,Add_student_result
     }
 }
