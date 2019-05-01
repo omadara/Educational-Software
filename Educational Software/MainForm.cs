@@ -21,6 +21,9 @@ namespace Educational_Software
         {
             InitializeComponent();
             Utils.fixEmulatedIEVersion();
+            treeView1.ExpandAll();
+            updateCompletedLabel();
+            updateTreeViewColors();
         }
 
         private string getSelectedFilePath()
@@ -33,11 +36,13 @@ namespace Educational_Software
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            if (quiz != null) quiz.Dispose();
             string filePath = getSelectedFilePath() + ".html";
             webBrowser1.Navigate("file://" + filePath);
             webBrowser1.Show();
             quizButton.Show();
-            if (quiz != null) quiz.Dispose();
+            Database.markLessonAsRead(treeView1.SelectedNode.Text);
+            updateTreeViewColors();
         }
 
         private void quizButton_Click(object sender, EventArgs e)
@@ -47,6 +52,28 @@ namespace Educational_Software
             string filePath = getSelectedFilePath() + ".xml";
             quiz = new QuizControl(filePath);
             splitContainer1.Panel2.Controls.Add(quiz);
+        }
+
+        private void updateCompletedLabel()
+        {
+            int count = Database.getCompletedLessonsCount();
+            int total = Database.getTotalLessons();
+            labelCompleted.Text = $"Completed {count}/{total}";
+        }
+
+        private void updateTreeViewColors()
+        {
+            ISet<string> completed = new HashSet<string>(Database.getCompletedLessonsNames());
+            ISet<string> read = new HashSet<string>(Database.getReadLessonsNames());
+            treeView1.forEachNode((TreeNode node) => {
+                string lessonName = node.Text;
+                if(completed.Contains(lessonName))
+                    node.BackColor = Color.FromArgb(192, 255, 192); //green
+                else if(read.Contains(lessonName))
+                    node.BackColor = Color.FromArgb(192, 230, 255); //blue
+                else
+                    node.BackColor = Color.FromArgb(224, 224, 224); //gray
+            });
         }
     }
 }

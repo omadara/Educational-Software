@@ -36,5 +36,18 @@ namespace Educational_Software
                 if (Key.GetValue(System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe") == null)
                     Key.SetValue(System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe", RegVal, RegistryValueKind.DWord);
         }
+
+        public static void forEachNode(this TreeView rootNode, Action<TreeNode> action)
+        {
+            foreach (TreeNode child in rootNode.Nodes)
+                child.forEachNode(action);
+        }
+
+        public static void forEachNode(this TreeNode node, Action<TreeNode> action)
+        {
+            action(node);
+            foreach (TreeNode child in node.Nodes)
+                child.forEachNode(action);
+        }
     }
 }

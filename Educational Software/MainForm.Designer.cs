@@ -56,6 +56,7 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.quizButton = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.labelCompleted = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -71,6 +72,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.labelCompleted);
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
             // 
             // splitContainer1.Panel2
@@ -84,8 +86,8 @@
             // treeView1
             // 
             this.treeView1.BackColor = System.Drawing.Color.Cornsilk;
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.treeView1.Location = new System.Drawing.Point(0, 28);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "Node1";
             treeNode1.Text = "Basic Syntax";
@@ -118,7 +120,7 @@
             treeNode2,
             treeNode8,
             treeNode13});
-            this.treeView1.Size = new System.Drawing.Size(140, 475);
+            this.treeView1.Size = new System.Drawing.Size(140, 447);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -148,6 +150,18 @@
             this.webBrowser1.Size = new System.Drawing.Size(673, 432);
             this.webBrowser1.TabIndex = 0;
             // 
+            // labelCompleted
+            // 
+            this.labelCompleted.AutoSize = true;
+            this.labelCompleted.BackColor = System.Drawing.Color.Transparent;
+            this.labelCompleted.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelCompleted.Location = new System.Drawing.Point(3, 9);
+            this.labelCompleted.Margin = new System.Windows.Forms.Padding(3);
+            this.labelCompleted.Name = "labelCompleted";
+            this.labelCompleted.Size = new System.Drawing.Size(98, 13);
+            this.labelCompleted.TabIndex = 1;
+            this.labelCompleted.Text = "Completed 3/15";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +173,7 @@
             this.Name = "MainForm";
             this.Text = "Learn Python";
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -172,6 +187,7 @@
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Button quizButton;
+        private System.Windows.Forms.Label labelCompleted;
     }
 }
 
