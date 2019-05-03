@@ -54,6 +54,26 @@ namespace Educational_Software
             //STUB
         }
 
+        internal static void markExerciseAsCompleted(string name)
+        {
+            //STUB
+        }
+
+        internal static void recordExerciseLogicalError(string name)
+        {
+            //STUB
+        }
+
+        internal static void recordExerciseSyntaxError(string name)
+        {
+            //STUB
+        }
+
+        internal static void recordExerciseUnknownError(string name)
+        {
+            //STUB
+        }
+
         //TODO Add_lesson,Update_lesson,Add_student_result
     }
 }

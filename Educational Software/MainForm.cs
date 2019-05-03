@@ -16,6 +16,7 @@ namespace Educational_Software
     public partial class MainForm : Form
     {
         private QuizControl quiz;
+        private ExerciseControl exercise;
 
         public MainForm()
         {
@@ -36,13 +37,28 @@ namespace Educational_Software
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            if (treeView1.SelectedNode.Text == "Exercises") return;
             if (quiz != null) quiz.Dispose();
+            if (exercise != null) exercise.Dispose();
+            if (treeView1.SelectedNode.Parent?.Text == "Exercises") {
+                exerciseSelected();
+                return;
+            }
             string filePath = getSelectedFilePath() + ".html";
             webBrowser1.Navigate("file://" + filePath);
             webBrowser1.Show();
             quizButton.Show();
             Database.markLessonAsRead(treeView1.SelectedNode.Text);
             updateTreeViewColors();
+        }
+
+        private void exerciseSelected()
+        {
+            webBrowser1.Hide();
+            quizButton.Hide();
+            string filePath = getSelectedFilePath();
+            exercise = new ExerciseControl(treeView1.SelectedNode.Text, filePath + "_quiz.py", filePath + "_test.py", exercise_Completed);
+            splitContainer1.Panel2.Controls.Add(exercise);
         }
 
         private void quizButton_Click(object sender, EventArgs e)
@@ -57,6 +73,14 @@ namespace Educational_Software
         private void quiz_Successful(object sender, EventArgs e)
         {
             Database.markLessonAsCompleted(treeView1.SelectedNode.Text);
+            updateCompletedLabel();
+            updateTreeViewColors();
+        }
+
+        private void exercise_Completed(object sender, EventArgs e)
+        {
+            Database.markExerciseAsCompleted(treeView1.SelectedNode.Text);
+            updateCompletedLabel();
             updateTreeViewColors();
         }
 
@@ -86,6 +110,7 @@ namespace Educational_Software
             ISet<string> read = new HashSet<string>(Database.getReadLessonsNames());
             treeView1.forEachNode((TreeNode node) => {
                 string lessonName = node.Text;
+                if(lessonName == "Exercises") return;
                 if(completed.Contains(lessonName))
                     node.BackColor = Color.FromArgb(192, 255, 192); //green
                 else if(read.Contains(lessonName))
