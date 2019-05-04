@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <question type="text" title="">
+		<answer correct="true"></answer>
+	</question>
+
+	<question type="single" title="">
+		<answer></answer>
+		<answer></answer>
+		<answer correct="true"></answer>
+	</question>
+
+	<question type="multi" title="">
+		<answer></answer>
+		<answer></answer>
+		<answer correct="true"></answer>
+		<answer></answer>
+		<answer correct="true"></answer>
+	</question>
+</quiz>

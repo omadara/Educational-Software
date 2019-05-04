@@ -28,34 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Basic Syntax");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Python Overview", new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Numbers");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Strings");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Lists");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Tuples");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Dictionary");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Variable Types", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4,
-            treeNode5,
-            treeNode6,
-            treeNode7});
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("If Elif Else");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("For Loop");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("While Loop");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Functions");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Control Flow", new System.Windows.Forms.TreeNode[] {
-            treeNode9,
-            treeNode10,
-            treeNode11,
-            treeNode12});
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Match Ends");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Fibonacci Numbers");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Exercises", new System.Windows.Forms.TreeNode[] {
-            treeNode14,
-            treeNode15});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Lessons");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Exercises");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.labelCompleted = new System.Windows.Forms.Label();
@@ -108,46 +82,17 @@
             this.treeView1.BackColor = System.Drawing.Color.Cornsilk;
             this.treeView1.Location = new System.Drawing.Point(0, 28);
             this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Basic Syntax";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Python Overview";
-            treeNode3.Name = "Node3";
-            treeNode3.Text = "Numbers";
-            treeNode4.Name = "Node6";
-            treeNode4.Text = "Strings";
-            treeNode5.Name = "Node7";
-            treeNode5.Text = "Lists";
-            treeNode6.Name = "Node8";
-            treeNode6.Text = "Tuples";
-            treeNode7.Name = "Node9";
-            treeNode7.Text = "Dictionary";
-            treeNode8.Name = "Node2";
-            treeNode8.Text = "Variable Types";
-            treeNode9.Name = "Node11";
-            treeNode9.Text = "If Elif Else";
-            treeNode10.Name = "Node12";
-            treeNode10.Text = "For Loop";
-            treeNode11.Name = "Node14";
-            treeNode11.Text = "While Loop";
-            treeNode12.Name = "Node15";
-            treeNode12.Tag = "";
-            treeNode12.Text = "Functions";
-            treeNode13.Name = "Node10";
-            treeNode13.Text = "Control Flow";
-            treeNode14.Name = "Node3";
-            treeNode14.Text = "Match Ends";
-            treeNode15.Name = "Node4";
-            treeNode15.Text = "Fibonacci Numbers";
-            treeNode16.Name = "Node2";
-            treeNode16.Text = "Exercises";
+            treeNode1.Name = "LessonsNode";
+            treeNode1.Text = "Lessons";
+            treeNode2.Name = "ExercisesNode";
+            treeNode2.Text = "Exercises";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2,
-            treeNode8,
-            treeNode13,
-            treeNode16});
+            treeNode1,
+            treeNode2});
             this.treeView1.Size = new System.Drawing.Size(162, 449);
             this.treeView1.TabIndex = 0;
+            this.treeView1.TabStop = false;
+            this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeSelect);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
             // quizButton
@@ -161,6 +106,7 @@
             this.quizButton.TabIndex = 1;
             this.quizButton.Text = "Take the quiz!";
             this.quizButton.UseVisualStyleBackColor = false;
+            this.quizButton.Visible = false;
             this.quizButton.Click += new System.EventHandler(this.quizButton_Click);
             // 
             // webBrowser1

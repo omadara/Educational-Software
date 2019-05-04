@@ -1,0 +1,21 @@
+body {
+	font-family: Verdana, Tahoma, Arial;
+	background-color: #fffae8;
+	padding-left: 10px;
+    padding-right: 10px;
+}
+
+table {
+    border-collapse: collapse;
+	background-color: #f4eed9;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+td:hover {
+	background-color:#f5f5f5;
+}

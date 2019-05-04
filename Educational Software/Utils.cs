@@ -39,6 +39,11 @@ namespace Educational_Software
                     Key.SetValue(System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe", RegVal, RegistryValueKind.DWord);
         }
 
+        public static bool isLeaf(this TreeNode node)
+        {
+            return node.Nodes.Count == 0;
+        }
+
         public static void forEachNode(this TreeView rootNode, Action<TreeNode> action)
         {
             foreach (TreeNode child in rootNode.Nodes)
@@ -50,6 +55,15 @@ namespace Educational_Software
             action(node);
             foreach (TreeNode child in node.Nodes)
                 child.forEachNode(action);
+        }
+
+        public static int countLeafs(this TreeView node)
+        {
+            int count = 0;
+            node.forEachNode((TreeNode n) => {
+                if (n.isLeaf()) count++;
+            });
+            return count;
         }
 
         // ScintillaNET styles for Python, modified from https://gist.github.com/jacobslusser/29c10e73a8d4baf3745a#file-pythonrecipe-cs

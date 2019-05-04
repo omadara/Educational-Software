@@ -22,22 +22,44 @@ namespace Educational_Software
         {
             InitializeComponent();
             Utils.fixEmulatedIEVersion();
+            webBrowser1.Navigate("file://" + Path.GetFullPath(@"..\..\extra\welcome.html"));
+            feedTreeViewFromFileSystem();
             treeView1.ExpandAll();
             updateCompletedLabel();
             updateTreeViewColors();
         }
 
-        private string getSelectedFilePath()
+        private void feedTreeViewFromFileSystem()
         {
-            string filePath = Path.GetFullPath(@"..\..\course\" + treeView1.SelectedNode.FullPath);
-            if (treeView1.SelectedNode.Parent == null)
-                filePath += "\\" + treeView1.SelectedNode.FullPath;
-            return filePath;
+            //lessons
+            foreach(string dirPath in Directory.GetDirectories(@"..\..\extra\Lessons")) {
+                string chapterName = Path.GetFileName(dirPath);
+                TreeNode chapter = treeView1.Nodes["LessonsNode"].Nodes.Add(chapterName);
+                foreach (string filename in Directory.GetFiles(dirPath, "*.html")) {
+                    string lessonName = Path.GetFileNameWithoutExtension(filename);
+                    chapter.Nodes.Add(lessonName);
+                    Database.insertLessonIfNew(lessonName);
+                }
+            }
+            //exercises
+            foreach(string filename in Directory.GetFiles(@"..\..\extra\Exercises", "*.py")) {
+                if (filename.EndsWith("testing.py")) continue;
+                string exerciseName = Path.GetFileNameWithoutExtension(filename);
+                treeView1.Nodes["ExercisesNode"].Nodes.Add(exerciseName);
+                Database.insertExerciseIfNew(exerciseName);
+            }
+        }
+
+        private string getSelectedFilePath() {
+            return Path.GetFullPath(@"..\..\extra\" + treeView1.SelectedNode.FullPath);
+        }
+
+        private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e) {
+            if (!e.Node.isLeaf()) e.Cancel = true; //can select only leafs
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (treeView1.SelectedNode.Text == "Exercises") return;
             if (quiz != null) quiz.Dispose();
             if (exercise != null) exercise.Dispose();
             if (treeView1.SelectedNode.Parent?.Text == "Exercises") {
@@ -56,9 +78,10 @@ namespace Educational_Software
         {
             webBrowser1.Hide();
             quizButton.Hide();
-            string filePath = getSelectedFilePath();
-            exercise = new ExerciseControl(treeView1.SelectedNode.Text, filePath + "_quiz.py", filePath + "_test.py", exercise_Completed);
+            string filePath = getSelectedFilePath() + ".py";
+            exercise = new ExerciseControl(treeView1.SelectedNode.Text, filePath, exercise_Completed);
             splitContainer1.Panel2.Controls.Add(exercise);
+            Database.markExerciseAsStarted(treeView1.SelectedNode.Text);
         }
 
         private void quizButton_Click(object sender, EventArgs e)
@@ -99,25 +122,36 @@ namespace Educational_Software
 
         private void updateCompletedLabel()
         {
-            int count = Database.getCompletedLessonsCount();
-            int total = Database.getTotalLessons();
+            int count = Database.getCompletedLessonsCount() + Database.getCompletedExercisesCount();
+            int total = treeView1.countLeafs();
             labelCompleted.Text = $"Completed {count}/{total}";
         }
 
         private void updateTreeViewColors()
         {
-            ISet<string> completed = new HashSet<string>(Database.getCompletedLessonsNames());
-            ISet<string> read = new HashSet<string>(Database.getReadLessonsNames());
-            treeView1.forEachNode((TreeNode node) => {
-                string lessonName = node.Text;
-                if(lessonName == "Exercises") return;
-                if(completed.Contains(lessonName))
-                    node.BackColor = Color.FromArgb(192, 255, 192); //green
-                else if(read.Contains(lessonName))
-                    node.BackColor = Color.FromArgb(192, 230, 255); //blue
-                else
-                    node.BackColor = Color.FromArgb(224, 224, 224); //gray
+            colorizeAllTreeViewLeafs(treeView1.Nodes["LessonsNode"], Color.FromArgb(224, 224, 224)); //gray
+            colorizeTreeViewLeafs(treeView1.Nodes["LessonsNode"], Database.getCompletedLessonsNames(), Color.FromArgb(192, 255, 192)); // green
+            colorizeTreeViewLeafs(treeView1.Nodes["LessonsNode"], Database.getReadLessonsNames(), Color.FromArgb(192, 230, 255)); //blue
+            colorizeAllTreeViewLeafs(treeView1.Nodes["ExercisesNode"], Color.FromArgb(224, 224, 224)); //gray
+            colorizeTreeViewLeafs(treeView1.Nodes["ExercisesNode"], Database.getCompletedExercisesNames(), Color.FromArgb(192, 255, 192)); //green
+            colorizeTreeViewLeafs(treeView1.Nodes["ExercisesNode"], Database.getStartedExercisesNames(), Color.FromArgb(192, 230, 255)); //blue
+        }
+
+        private void colorizeAllTreeViewLeafs(TreeNode root, Color color)
+        {
+            root.forEachNode((TreeNode node) => {
+                if (node.isLeaf()) node.BackColor = color;
             });
         }
+
+        private void colorizeTreeViewLeafs(TreeNode root, IEnumerable<string> nodeTexts, Color color)
+        {
+            ISet<string> nodeTextsSet = new HashSet<string>(nodeTexts);
+            root.forEachNode((TreeNode node) => {
+                if (node.isLeaf() && nodeTextsSet.Contains(node.Text))
+                    node.BackColor = color;
+            });
+        }
+
     }
 }

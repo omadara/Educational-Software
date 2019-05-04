@@ -29,6 +29,11 @@ namespace Educational_Software
             return getCompletedLessonsNames().Count();
         }
 
+        internal static int getCompletedExercisesCount()
+        {
+            return getCompletedExercisesNames().Count();
+        }
+
         internal static int getTotalLessons()
         {
             return 15; //STUB
@@ -39,9 +44,19 @@ namespace Educational_Software
             return new string[] {"Python Overview", "Basic Syntax"}; //STUB
         }
 
+        internal static IEnumerable<string> getCompletedExercisesNames()
+        {
+            return new string[] { "Fibonacci Numbers" }; //STUB
+        }
+
         internal static IEnumerable<string> getReadLessonsNames()
         {
             return new string[] { "Variable Types", "Numbers" }; //STUB
+        }
+
+        internal static void insertLessonIfNew(string lessonName)
+        {
+            //STUB
         }
 
         internal static void markLessonAsRead(string title)
@@ -59,6 +74,11 @@ namespace Educational_Software
             //STUB
         }
 
+        internal static void insertExerciseIfNew(string exerciseName)
+        {
+            //STUB
+        }
+
         internal static void recordExerciseLogicalError(string name)
         {
             //STUB
@@ -70,6 +90,16 @@ namespace Educational_Software
         }
 
         internal static void recordExerciseUnknownError(string name)
+        {
+            //STUB
+        }
+
+        internal static IEnumerable<string> getStartedExercisesNames()
+        {
+            return new string[] { }; //STUB
+        }
+
+        internal static void markExerciseAsStarted(string text)
         {
             //STUB
         }
