@@ -14,7 +14,11 @@ namespace Educational_Software
         private static string filename = "db.sqlite";
         private static string Select_lesson_sql = "SELECT title from lessons where status ='{0}';";
         private static string Select_exercise_sql = "SELECT title from exercises where status ='{0}';";
-        private static string update_sql = "UPDATE {0} SET status = '{1} WHERE title={2};";
+        private static string update_sql = "INSERT INTO {0}(title,status) " +
+            "values('{2}','{1}') " +
+            "ON CONFLICT(title) "+
+            "DO UPDATE SET status='{1}'" +
+            "WHERE status!='"+STATUS.COMPLETED+"';";
         private static string insert_mistake_sql = "INSERT INTO mistakes(exercise,error_type_timestamp) values ('{0}','{1}',datetime(now));";
 
         private enum STATUS { UNREAD,READ, COMPLETED};
