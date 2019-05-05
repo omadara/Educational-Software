@@ -93,7 +93,7 @@ namespace Educational_Software
         private bool isSingleAnswerCorrect(XmlNode question)
         {
             if (question.Attributes["type"].InnerXml != "single") return false;
-            string inputAnswer = answersPanel.Controls.OfType<RadioButton>().FirstOrDefault(radio => radio.Checked).Text;
+            string inputAnswer = answersPanel.Controls.OfType<RadioButton>().FirstOrDefault(radio => radio.Checked)?.Text;
             string correctAnswer = question.ChildNodes.Cast<XmlNode>().First(node => node.Attributes["correct"]?.InnerXml == "true").InnerXml;
             return inputAnswer == correctAnswer;
         }
@@ -102,9 +102,9 @@ namespace Educational_Software
         {
             if (question.Attributes["type"].InnerXml != "multi") return false;
             ISet<string> inputAnswers = new HashSet<string>(answersPanel.Controls.OfType<CheckBox>()
-                .Where(checkbox => checkbox.Checked).Select(checkbox => checkbox.Text));
+                .Where(checkbox => checkbox.Checked)?.Select(checkbox => checkbox.Text));
             ISet<string> correctAnswers = new HashSet<string>(question.ChildNodes.Cast<XmlNode>()
-                .Where(node => node.Attributes["correct"]?.InnerXml == "true").Select(node => node.InnerXml));
+                .Where(node => node.Attributes["correct"]?.InnerXml == "true")?.Select(node => node.InnerXml));
             return inputAnswers.SetEquals(correctAnswers);
         }
 

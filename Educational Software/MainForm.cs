@@ -153,5 +153,10 @@ namespace Educational_Software
             });
         }
 
+        private void MainForm_HelpButtonClicked(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Help.ShowHelp(this, "manual.chm", HelpNavigator.TopicId, "10");
+        }
     }
 }
