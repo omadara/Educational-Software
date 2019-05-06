@@ -35,23 +35,21 @@ namespace Educational_Software
             foreach(string dirPath in Directory.GetDirectories(@"..\..\extra\Lessons")) {
                 string chapterName = Path.GetFileName(dirPath);
                 TreeNode chapter = treeView1.Nodes["LessonsNode"].Nodes.Add(chapterName);
-                foreach (string filename in Directory.GetFiles(dirPath, "*.html")) {
-                    string lessonName = Path.GetFileNameWithoutExtension(filename);
-                    chapter.Nodes.Add(lessonName);
+                foreach (string filename in Directory.GetFiles(dirPath, "*.html").OrderBy(f => f)) {
+                    string lessonName = Path.GetFileNameWithoutExtension(filename).Split(new char[] { '_' }, 2)[1];
+                    TreeNode node = chapter.Nodes.Add(lessonName);
+                    node.Tag = filename;
                     Database.insertLessonIfNew(lessonName);
                 }
             }
             //exercises
-            foreach(string filename in Directory.GetFiles(@"..\..\extra\Exercises", "*.py")) {
+            foreach(string filename in Directory.GetFiles(@"..\..\extra\Exercises", "*.py").OrderBy(f => f)) {
                 if (filename.EndsWith("testing.py")) continue;
                 string exerciseName = Path.GetFileNameWithoutExtension(filename);
-                treeView1.Nodes["ExercisesNode"].Nodes.Add(exerciseName);
+                TreeNode node = treeView1.Nodes["ExercisesNode"].Nodes.Add(exerciseName);
+                node.Tag = filename;
                 Database.insertExerciseIfNew(exerciseName);
             }
-        }
-
-        private string getSelectedFilePath() {
-            return Path.GetFullPath(@"..\..\extra\" + treeView1.SelectedNode.FullPath);
         }
 
         private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e) {
@@ -66,8 +64,9 @@ namespace Educational_Software
                 exerciseSelected();
                 return;
             }
-            string filePath = getSelectedFilePath() + ".html";
-            webBrowser1.Navigate("file://" + filePath);
+            string htmlFilePath = treeView1.SelectedNode.Tag as string;
+            Console.WriteLine(htmlFilePath);
+            webBrowser1.Navigate("file://" + Path.GetFullPath(htmlFilePath));
             webBrowser1.Show();
             quizButton.Show();
             Database.recordLessonReading(treeView1.SelectedNode.Text);
@@ -78,8 +77,8 @@ namespace Educational_Software
         {
             webBrowser1.Hide();
             quizButton.Hide();
-            string filePath = getSelectedFilePath() + ".py";
-            exercise = new ExerciseControl(treeView1.SelectedNode.Text, filePath, exercise_Completed);
+            string pyFilePath = treeView1.SelectedNode.Tag as string;
+            exercise = new ExerciseControl(treeView1.SelectedNode.Text, pyFilePath, exercise_Completed);
             splitContainer1.Panel2.Controls.Add(exercise);
             Database.markExerciseAsStarted(treeView1.SelectedNode.Text);
         }
@@ -88,8 +87,8 @@ namespace Educational_Software
         {
             webBrowser1.Hide();
             quizButton.Hide();
-            string filePath = getSelectedFilePath() + ".xml";
-            quiz = new QuizControl(treeView1.SelectedNode.Text, filePath, nextLesson_Click, quiz_Successful);
+            string xmlFilePath = (treeView1.SelectedNode.Tag as string).Replace(".html", ".xml");
+            quiz = new QuizControl(treeView1.SelectedNode.Text, xmlFilePath, nextLesson_Click, quiz_Successful);
             splitContainer1.Panel2.Controls.Add(quiz);
         }
 

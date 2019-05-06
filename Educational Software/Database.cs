@@ -12,7 +12,7 @@ namespace Educational_Software
     {
         private static SQLiteConnection con;
         private static string filename = "db.sqlite";
-        private static string Insert_lesson_sql = "INSERT OR IGNORE INTO lessons(title, status, read_times, timestamp) values ('{0}', " + (int)STATUS.UNREAD + ", 0, datetime('now'));";
+        private static string Insert_lesson_sql = "INSERT OR IGNORE INTO lessons(title, status, timestamp) values ('{0}', " + (int)STATUS.UNREAD + ", datetime('now'));";
         private static string Insert_exercise_sql = "INSERT OR IGNORE INTO exercises(title, status, timestamp) values ('{0}', " + (int)STATUS.UNREAD + ", datetime('now'));";
         private static string Insert_mistake_sql = "INSERT INTO mistakes(exercise, error_type, timestamp) values ('{0}', '{1}', datetime('now'));";
         private static string Insert_quiz_score_sql = "INSERT INTO quiz_scores(lesson, correct, total, timestamp) values ('{0}', {1}, {2}, datetime('now'));";
@@ -30,7 +30,7 @@ namespace Educational_Software
                 SQLiteConnection.CreateFile(filename);
             con = new SQLiteConnection("Data Source=" + filename + ";Version=3;");
             con.Open();
-            string sql1 = "CREATE TABLE IF NOT EXISTS  lessons(title TEXT PRIMARY KEY, status NUMBER, read_times NUMBER, timestamp NUMBER);";
+            string sql1 = "CREATE TABLE IF NOT EXISTS  lessons(title TEXT PRIMARY KEY, status NUMBER, timestamp NUMBER);";
             string sql2 = "CREATE TABLE IF NOT EXISTS  exercises(title TEXT PRIMARY KEY, status NUMBER, timestamp NUMBER);";
             string sql3 = "CREATE TABLE IF NOT EXISTS  mistakes(exercise TEXT, error_type NUMBER, timestamp NUMBER, FOREIGN KEY(exercise) REFERENCES exercises(title));";
             string sql4 = "CREATE TABLE IF NOT EXISTS  quiz_scores(lesson TEXT, correct NUMBER, total NUMBER, timestamp NUMBER, FOREIGN KEY(lesson) REFERENCES lessons(title));";
