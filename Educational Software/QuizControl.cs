@@ -14,17 +14,19 @@ namespace Educational_Software
     public partial class QuizControl : UserControl
     {
         private const float SUCCESS_PERCENTAGE = 0.60f;
+        private readonly string lessonName;
         private EventHandler nextLesson_Click;
         private EventHandler quiz_Successful;
         private XmlNodeList questions;
         private int current;
         private int score;
 
-        public QuizControl(string xmlPath, EventHandler nextLesson_Click, EventHandler quiz_Successful)
+        public QuizControl(string lessonName, string xmlPath, EventHandler nextLesson_Click, EventHandler quiz_Successful)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(xmlPath);
             this.questions = doc.DocumentElement.ChildNodes;
+            this.lessonName = lessonName;
             this.nextLesson_Click = nextLesson_Click;
             this.quiz_Successful = quiz_Successful;
             reset();
@@ -114,6 +116,7 @@ namespace Educational_Software
             resultsPanel.Show();
             float scoreRatio = (float)score / questions.Count;
             label1.Text = $"You got {score} out of {questions.Count} questions correct" + (scoreRatio == 1 ? "!!" : ".");
+            Database.scoreQuiz(lessonName, score, questions.Count);
             if (scoreRatio >= SUCCESS_PERCENTAGE) {
                 quiz_Successful(null, null);
                 if(scoreRatio != 1) {

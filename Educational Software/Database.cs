@@ -12,14 +12,16 @@ namespace Educational_Software
     {
         private static SQLiteConnection con;
         private static string filename = "db.sqlite";
-        private static string Insert_lesson_sql = "INSERT OR IGNORE INTO lessons(title, status, timestamp) values ('{0}', " + (int)STATUS.UNREAD + ", datetime('now'));";
+        private static string Insert_lesson_sql = "INSERT OR IGNORE INTO lessons(title, status, read_times, timestamp) values ('{0}', " + (int)STATUS.UNREAD + ", 0, datetime('now'));";
         private static string Insert_exercise_sql = "INSERT OR IGNORE INTO exercises(title, status, timestamp) values ('{0}', " + (int)STATUS.UNREAD + ", datetime('now'));";
         private static string Insert_mistake_sql = "INSERT INTO mistakes(exercise, error_type, timestamp) values ('{0}', '{1}', datetime('now'));";
+        private static string Insert_quiz_score_sql = "INSERT INTO quiz_scores(lesson, correct, total, timestamp) values ('{0}', {1}, {2}, datetime('now'));";
+        private static string Insert_lesson_reading_sql = "INSERT INTO lesson_readings(lesson, timestamp) values ('{0}', datetime('now'));";
         private static string Select_lesson_sql = "SELECT title from lessons where status = {0};";
         private static string Select_exercise_sql = "SELECT title from exercises where status = {0};";
         private static string Update_lesson_status_sql = "UPDATE lessons SET status = {1}, timestamp = datetime('now') where title='{0}' and status != " + (int)STATUS.COMPLETED + ";";
         private static string Update_exercise_status_sql = "UPDATE exercises SET status = {1}, timestamp = datetime('now') where title='{0}' and status != " + (int)STATUS.COMPLETED + ";";
-
+        
         private enum STATUS { UNREAD,READ, COMPLETED};
         private enum ERROR_TYPE { LogicalError , SyntaxError, UnknownError }
 
@@ -28,10 +30,12 @@ namespace Educational_Software
                 SQLiteConnection.CreateFile(filename);
             con = new SQLiteConnection("Data Source=" + filename + ";Version=3;");
             con.Open();
-            string sql1 = "CREATE TABLE IF NOT EXISTS  lessons(title TEXT PRIMARY KEY, status NUMBER, timestamp NUMBER);";
+            string sql1 = "CREATE TABLE IF NOT EXISTS  lessons(title TEXT PRIMARY KEY, status NUMBER, read_times NUMBER, timestamp NUMBER);";
             string sql2 = "CREATE TABLE IF NOT EXISTS  exercises(title TEXT PRIMARY KEY, status NUMBER, timestamp NUMBER);";
             string sql3 = "CREATE TABLE IF NOT EXISTS  mistakes(exercise TEXT, error_type NUMBER, timestamp NUMBER, FOREIGN KEY(exercise) REFERENCES exercises(title));";
-            using (SQLiteCommand command = new SQLiteCommand(sql1 + sql2 + sql3, con))
+            string sql4 = "CREATE TABLE IF NOT EXISTS  quiz_scores(lesson TEXT, correct NUMBER, total NUMBER, timestamp NUMBER, FOREIGN KEY(lesson) REFERENCES lessons(title));";
+            string sql5 = "CREATE TABLE IF NOT EXISTS  lesson_readings(lesson TEXT, timestamp NUMBER, FOREIGN KEY(lesson) REFERENCES lessons(title));";
+            using (SQLiteCommand command = new SQLiteCommand(sql1 + sql2 + sql3 + sql4 + sql5, con))
                 command.ExecuteNonQuery();
         }
 
@@ -119,6 +123,16 @@ namespace Educational_Software
 
         internal static void recordExerciseUnknownError(string name) {
             using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_mistake_sql, name, (int)ERROR_TYPE.UnknownError), con))
+                com.ExecuteNonQuery();
+        }
+
+        internal static void scoreQuiz(string lessonName, int score, int count) {
+            using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_quiz_score_sql, lessonName, score, count), con))
+                com.ExecuteNonQuery();
+        }
+
+        internal static void recordLessonReading(string lessonName) {
+            using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_lesson_reading_sql, lessonName), con))
                 com.ExecuteNonQuery();
         }
     }

@@ -70,7 +70,7 @@ namespace Educational_Software
             webBrowser1.Navigate("file://" + filePath);
             webBrowser1.Show();
             quizButton.Show();
-            Database.markLessonAsRead(treeView1.SelectedNode.Text);
+            Database.recordLessonReading(treeView1.SelectedNode.Text);
             updateTreeViewColors();
         }
 
@@ -89,7 +89,7 @@ namespace Educational_Software
             webBrowser1.Hide();
             quizButton.Hide();
             string filePath = getSelectedFilePath() + ".xml";
-            quiz = new QuizControl(filePath, nextLesson_Click, quiz_Successful);
+            quiz = new QuizControl(treeView1.SelectedNode.Text, filePath, nextLesson_Click, quiz_Successful);
             splitContainer1.Panel2.Controls.Add(quiz);
         }
 
