@@ -93,6 +93,12 @@
     <Compile Include="QuizControl.Designer.cs">
       <DependentUpon>QuizControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="StatsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StatsForm.Designer.cs">
+      <DependentUpon>StatsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="ExerciseControl.resx">
       <DependentUpon>ExerciseControl.cs</DependentUpon>
@@ -112,6 +118,9 @@
     </Compile>
     <EmbeddedResource Include="QuizControl.resx">
       <DependentUpon>QuizControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StatsForm.resx">
+      <DependentUpon>StatsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

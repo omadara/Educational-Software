@@ -61,6 +61,9 @@ namespace Educational_Software
                 p.Start();
                 if (!p.WaitForExit(5000)) {
                     MessageBox.Show("Your little program took longer than 5 seconds to run...\nHad to kill it, sorry!", "Infinite loop detected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    p.Kill();
+                    Database.recordExerciseInfiniteLoopError(name);
+                    return;
                 }
                 string outputError = p.StandardError.ReadToEnd();
                 if(!string.IsNullOrEmpty(outputError)) {

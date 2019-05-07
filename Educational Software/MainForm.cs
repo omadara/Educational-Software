@@ -152,10 +152,20 @@ namespace Educational_Software
             });
         }
 
-        private void MainForm_HelpButtonClicked(object sender, CancelEventArgs e)
-        {
-            e.Cancel = true;
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
             Help.ShowHelp(this, "manual.chm", HelpNavigator.TopicId, "10");
+        }
+
+        private void readingHistoryToolStripMenuItem_Click(object sender, EventArgs e) {
+            new StatsForm(StatsForm.StatsType.ReadingHistory).Show();
+        }
+
+        private void quizScoresToolStripMenuItem_Click(object sender, EventArgs e) {
+            new StatsForm(StatsForm.StatsType.QuizScores).Show();
+        }
+
+        private void exerciseErrorsToolStripMenuItem_Click(object sender, EventArgs e) {
+            new StatsForm(StatsForm.StatsType.ExerciseErrors).Show();
         }
     }
 }

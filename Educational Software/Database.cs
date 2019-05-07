@@ -19,11 +19,18 @@ namespace Educational_Software
         private static string Insert_lesson_reading_sql = "INSERT INTO lesson_readings(lesson, timestamp) values ('{0}', datetime('now'));";
         private static string Select_lesson_sql = "SELECT title from lessons where status = {0};";
         private static string Select_exercise_sql = "SELECT title from exercises where status = {0};";
+        private static string Select_readings_sql = "SELECT lesson, timestamp from lesson_readings;";
+        private static string Select_quiz_scores_sql = "SELECT timestamp, lesson, correct, total from quiz_scores;";
+        private static string Select_exercise_mistakes_sql = "SELECT timestamp, exercise, error_type from mistakes;";
         private static string Update_lesson_status_sql = "UPDATE lessons SET status = {1}, timestamp = datetime('now') where title='{0}' and status != " + (int)STATUS.COMPLETED + ";";
         private static string Update_exercise_status_sql = "UPDATE exercises SET status = {1}, timestamp = datetime('now') where title='{0}' and status != " + (int)STATUS.COMPLETED + ";";
-        
+
         private enum STATUS { UNREAD,READ, COMPLETED};
-        private enum ERROR_TYPE { LogicalError , SyntaxError, UnknownError }
+        private enum ERROR_TYPE { LogicalError , SyntaxError, InfiniteLoop, UnknownError }
+
+        internal static string errorTypeTolabel(int value) {
+            return Enum.GetName(typeof(ERROR_TYPE), value);
+        }
 
         internal static void initialize() {
             if (!System.IO.File.Exists(filename))
@@ -121,6 +128,11 @@ namespace Educational_Software
                 com.ExecuteNonQuery();
         }
 
+        internal static void recordExerciseInfiniteLoopError(string name) {
+            using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_mistake_sql, name, (int)ERROR_TYPE.InfiniteLoop), con))
+                com.ExecuteNonQuery();
+        }
+
         internal static void recordExerciseUnknownError(string name) {
             using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_mistake_sql, name, (int)ERROR_TYPE.UnknownError), con))
                 com.ExecuteNonQuery();
@@ -134,6 +146,21 @@ namespace Educational_Software
         internal static void recordLessonReading(string lessonName) {
             using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_lesson_reading_sql, lessonName), con))
                 com.ExecuteNonQuery();
+        }
+
+        internal static SQLiteDataReader getLessonReadings() {
+            using (SQLiteCommand com = new SQLiteCommand(Select_readings_sql, con))
+                return com.ExecuteReader();
+        }
+
+        internal static SQLiteDataReader getQuizScores() {
+            using (SQLiteCommand com = new SQLiteCommand(Select_quiz_scores_sql, con))
+                return com.ExecuteReader();
+        }
+
+        internal static SQLiteDataReader getExerciseErrors() {
+            using (SQLiteCommand com = new SQLiteCommand(Select_exercise_mistakes_sql, con))
+                return com.ExecuteReader();
         }
     }
 }
