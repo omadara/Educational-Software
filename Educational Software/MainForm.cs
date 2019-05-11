@@ -65,7 +65,6 @@ namespace Educational_Software
                 return;
             }
             string htmlFilePath = treeView1.SelectedNode.Tag as string;
-            Console.WriteLine(htmlFilePath);
             webBrowser1.Navigate("file://" + Path.GetFullPath(htmlFilePath));
             webBrowser1.Show();
             quizButton.Show();
@@ -114,7 +113,7 @@ namespace Educational_Software
             else if (selected.NextNode != null)
                 selected = selected.NextNode; //next sibling
             else
-                selected = selected.Parent?.NextNode; //next aunt
+                selected = selected.Parent?.NextNode?.Nodes?[0]; //next cousin
             if(selected != null)
                 treeView1.SelectedNode = selected;            
         }

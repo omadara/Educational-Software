@@ -144,6 +144,7 @@ namespace Educational_Software
         }
 
         internal static void recordLessonReading(string lessonName) {
+            markLessonAsRead(lessonName);
             using (SQLiteCommand com = new SQLiteCommand(String.Format(Insert_lesson_reading_sql, lessonName), con))
                 com.ExecuteNonQuery();
         }
