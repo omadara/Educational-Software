@@ -15,13 +15,15 @@ namespace Educational_Software
     {
         private const float SUCCESS_PERCENTAGE = 0.60f;
         private readonly string lessonName;
-        private EventHandler nextLesson_Click;
-        private EventHandler quiz_Successful;
-        private XmlNodeList questions;
+        private readonly string[] chapterLessonNames;
+        private readonly EventHandler nextLesson_Click;
+        private readonly EventHandler quiz_Successful;
+        private readonly XmlNodeList questions;
+        private int[] prereqsCount;
         private int current;
         private int score;
 
-        public QuizControl(string lessonName, string xmlPath, EventHandler nextLesson_Click, EventHandler quiz_Successful)
+        public QuizControl(string lessonName, string xmlPath, EventHandler nextLesson_Click, EventHandler quiz_Successful, string[] chapterLessonNames)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(xmlPath);
@@ -29,6 +31,7 @@ namespace Educational_Software
             this.lessonName = lessonName;
             this.nextLesson_Click = nextLesson_Click;
             this.quiz_Successful = quiz_Successful;
+            this.chapterLessonNames = chapterLessonNames;
             reset();
         }
 
@@ -38,6 +41,7 @@ namespace Educational_Software
             this.Dock = DockStyle.Fill;
             score = 0;
             current = -1;
+            this.prereqsCount = new int[chapterLessonNames.Length];
             displayNextQuestion();
         }
 
@@ -80,6 +84,8 @@ namespace Educational_Software
                 || isSingleAnswerCorrect(question)
                 || isMultiAnswerCorrect(question)) {
                 score++;
+            } else {
+                gotWrongAnswer(question);
             }
             displayNextQuestion();
         }
@@ -110,6 +116,15 @@ namespace Educational_Software
             return inputAnswers.SetEquals(correctAnswers);
         }
 
+        private void gotWrongAnswer(XmlNode question)
+        {
+            string pStr = question.Attributes["prereq"]?.Value;
+            if (pStr == null) return;
+            int[] prereqs = pStr.Split('|').Select(s => int.Parse(s)).ToArray();
+            foreach (int p in prereqs)
+                prereqsCount[p]++;
+        }
+
         private void displayResults()
         {
             flowLayoutPanel1.Hide();
@@ -119,21 +134,29 @@ namespace Educational_Software
             Database.scoreQuiz(lessonName, score, questions.Count);
             if (scoreRatio >= SUCCESS_PERCENTAGE) {
                 quiz_Successful(null, null);
-                if(scoreRatio != 1) {
-                    button1.Click += tryAgain_Click;
-                    button2.Show();
-                    button2.Click += nextLesson_Click;
-                } else {
-                    button1.BackColor = button2.BackColor;
-                    button1.Text = button2.Text;
-                    button1.Click += nextLesson_Click;
+                nextButton.Show();
+                nextButton.Click += nextLesson_Click;
+                if (scoreRatio != 1) {
+                    againButton.Show();
+                    againButton.Click += tryAgain_Click;
                 }
             } else {
                 labelSuccess.ForeColor = Color.Firebrick;
                 labelSuccess.Text = "Ops...";
                 label1.Text += $"\nAnswer at least {Math.Ceiling(SUCCESS_PERCENTAGE*questions.Count)} questions correctly to pass.";
-                button1.Click += tryAgain_Click;
+                againButton.Show();
+                againButton.Click += tryAgain_Click;
+                displayRecommendationsIfExists();
             }
+        }
+
+        private void displayRecommendationsIfExists()
+        {
+            int max = prereqsCount.Max();
+            if (max == 0) return; //no recommendations from prereqs
+            int argMax = Array.IndexOf(prereqsCount, max);
+            labelRec.Show();
+            labelRec.Text = $"Please read: '{chapterLessonNames[argMax]}' and try again.";
         }
 
         private void tryAgain_Click(object sender, EventArgs e)

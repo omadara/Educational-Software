@@ -28,33 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.resultsPanel = new System.Windows.Forms.Panel();
+            this.labelSuccess = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nextButton = new System.Windows.Forms.Button();
+            this.againButton = new System.Windows.Forms.Button();
             this.submitButton = new System.Windows.Forms.Button();
             this.answersPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.labelDivider = new System.Windows.Forms.Label();
             this.labelProgress = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.labelSuccess = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.resultsPanel.SuspendLayout();
+            this.resultsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelRec = new System.Windows.Forms.Label();
             this.flowLayoutPanel1.SuspendLayout();
+            this.resultsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // resultsPanel
+            // labelSuccess
             // 
-            this.resultsPanel.Controls.Add(this.labelSuccess);
-            this.resultsPanel.Controls.Add(this.label1);
-            this.resultsPanel.Controls.Add(this.button2);
-            this.resultsPanel.Controls.Add(this.button1);
-            this.resultsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resultsPanel.Location = new System.Drawing.Point(0, 0);
-            this.resultsPanel.Name = "resultsPanel";
-            this.resultsPanel.Size = new System.Drawing.Size(634, 426);
-            this.resultsPanel.TabIndex = 8;
-            this.resultsPanel.Visible = false;
+            this.labelSuccess.AutoSize = true;
+            this.labelSuccess.Font = new System.Drawing.Font("Verdana", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelSuccess.ForeColor = System.Drawing.Color.MediumSeaGreen;
+            this.labelSuccess.Location = new System.Drawing.Point(10, 10);
+            this.labelSuccess.Margin = new System.Windows.Forms.Padding(10, 10, 10, 0);
+            this.labelSuccess.Name = "labelSuccess";
+            this.labelSuccess.Size = new System.Drawing.Size(191, 23);
+            this.labelSuccess.TabIndex = 0;
+            this.labelSuccess.Text = "Congratulations!";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label1.Location = new System.Drawing.Point(10, 43);
+            this.label1.Margin = new System.Windows.Forms.Padding(10, 10, 10, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(343, 18);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "You answered correctly 2 out of 3 questions.";
+            // 
+            // nextButton
+            // 
+            this.nextButton.AutoSize = true;
+            this.nextButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.nextButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.nextButton.Location = new System.Drawing.Point(10, 99);
+            this.nextButton.Margin = new System.Windows.Forms.Padding(10, 10, 10, 0);
+            this.nextButton.Name = "nextButton";
+            this.nextButton.Size = new System.Drawing.Size(106, 32);
+            this.nextButton.TabIndex = 8;
+            this.nextButton.Text = "Next Lesson";
+            this.nextButton.UseVisualStyleBackColor = false;
+            this.nextButton.Visible = false;
+            // 
+            // againButton
+            // 
+            this.againButton.AutoSize = true;
+            this.againButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.againButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.againButton.Location = new System.Drawing.Point(10, 141);
+            this.againButton.Margin = new System.Windows.Forms.Padding(10);
+            this.againButton.Name = "againButton";
+            this.againButton.Size = new System.Drawing.Size(106, 32);
+            this.againButton.TabIndex = 9;
+            this.againButton.Text = "Try Again";
+            this.againButton.UseVisualStyleBackColor = false;
+            this.againButton.Visible = false;
             // 
             // submitButton
             // 
@@ -128,51 +167,32 @@
             this.flowLayoutPanel1.TabIndex = 4;
             this.flowLayoutPanel1.WrapContents = false;
             // 
-            // labelSuccess
+            // resultsPanel
             // 
-            this.labelSuccess.AutoSize = true;
-            this.labelSuccess.Font = new System.Drawing.Font("Verdana", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelSuccess.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.labelSuccess.Location = new System.Drawing.Point(15, 15);
-            this.labelSuccess.Name = "labelSuccess";
-            this.labelSuccess.Size = new System.Drawing.Size(191, 23);
-            this.labelSuccess.TabIndex = 0;
-            this.labelSuccess.Text = "Congratulations!";
+            this.resultsPanel.Controls.Add(this.labelSuccess);
+            this.resultsPanel.Controls.Add(this.label1);
+            this.resultsPanel.Controls.Add(this.labelRec);
+            this.resultsPanel.Controls.Add(this.nextButton);
+            this.resultsPanel.Controls.Add(this.againButton);
+            this.resultsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.resultsPanel.Location = new System.Drawing.Point(0, 0);
+            this.resultsPanel.Name = "resultsPanel";
+            this.resultsPanel.Size = new System.Drawing.Size(634, 426);
+            this.resultsPanel.TabIndex = 10;
+            this.resultsPanel.Visible = false;
             // 
-            // label1
+            // labelRec
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label1.Location = new System.Drawing.Point(11, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(391, 18);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "You answered correctly 2 out of 3 questions.\\nadfa";
-            // 
-            // button2
-            // 
-            this.button2.AutoSize = true;
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.button2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.button2.Location = new System.Drawing.Point(126, 91);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(106, 32);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Next Lesson";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.AutoSize = true;
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.button1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.button1.Location = new System.Drawing.Point(14, 91);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(106, 32);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Try Again";
-            this.button1.UseVisualStyleBackColor = false;
+            this.labelRec.AutoSize = true;
+            this.labelRec.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelRec.Location = new System.Drawing.Point(10, 71);
+            this.labelRec.Margin = new System.Windows.Forms.Padding(10, 10, 10, 0);
+            this.labelRec.Name = "labelRec";
+            this.labelRec.Size = new System.Drawing.Size(180, 18);
+            this.labelRec.TabIndex = 10;
+            this.labelRec.Text = "Please read: \'Lesson 1\'";
+            this.labelRec.Visible = false;
             // 
             // QuizControl
             // 
@@ -184,18 +204,16 @@
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.Name = "QuizControl";
             this.Size = new System.Drawing.Size(634, 426);
-            this.resultsPanel.ResumeLayout(false);
-            this.resultsPanel.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.resultsPanel.ResumeLayout(false);
+            this.resultsPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel resultsPanel;
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.FlowLayoutPanel answersPanel;
         private System.Windows.Forms.Label labelTitle;
@@ -204,7 +222,9 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label labelSuccess;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button nextButton;
+        private System.Windows.Forms.Button againButton;
+        private System.Windows.Forms.FlowLayoutPanel resultsPanel;
+        private System.Windows.Forms.Label labelRec;
     }
 }

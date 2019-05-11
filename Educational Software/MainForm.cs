@@ -87,7 +87,11 @@ namespace Educational_Software
             webBrowser1.Hide();
             quizButton.Hide();
             string xmlFilePath = (treeView1.SelectedNode.Tag as string).Replace(".html", ".xml");
-            quiz = new QuizControl(treeView1.SelectedNode.Text, xmlFilePath, nextLesson_Click, quiz_Successful);
+            TreeNodeCollection chapterLessonNodes = treeView1.SelectedNode.Parent.Nodes;
+            string[] chapterLessonNames = new string[chapterLessonNodes.Count];
+            for(int i = 0; i < chapterLessonNodes.Count; i++)
+                chapterLessonNames[i] = chapterLessonNodes[i].Text;
+            quiz = new QuizControl(treeView1.SelectedNode.Text, xmlFilePath, nextLesson_Click, quiz_Successful, chapterLessonNames);
             splitContainer1.Panel2.Controls.Add(quiz);
         }
 
